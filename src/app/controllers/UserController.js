@@ -1,4 +1,6 @@
-import { v4 } from "uuid"
+import {
+  v4
+} from "uuid"
 import * as Yup from "yup"
 
 import User from "../models/User"
@@ -17,19 +19,32 @@ class UserController {
     // }
 
     try {
-      await schema.validateSync(request.body, { abortEarly: false })
+      await schema.validateSync(request.body, {
+        abortEarly: false
+      })
     } catch (err) {
-      return response.status(400).json({ error: err.errors })
+      return response.status(400).json({
+        error: err.errors
+      })
     }
 
-    const { name, email, password, admin } = request.body
+    const {
+      name,
+      email,
+      password,
+      admin
+    } = request.body
 
     const userExist = await User.findOne({
-      where: { email },
+      where: {
+        email
+      },
     })
 
     if (userExist) {
-      return response.status(400).json({ error: "esse email já existe" })
+      return response.status(400).json({
+        error: "Esse email já existe"
+      })
     }
 
     const user = await User.create({
@@ -40,7 +55,12 @@ class UserController {
       admin,
     })
 
-    return response.status(201).json({ id: user.id, name, email, admin })
+    return response.status(201).json({
+      id: user.id,
+      name,
+      email,
+      admin
+    })
   }
 }
 

@@ -1,31 +1,58 @@
 import * as Yup from "yup"
+import Category from "../models/Category"
 import Product from "../models/Product"
 
 class ProductController {
   async store(request, response) {
-    const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      price: Yup.number().required(),
-      category: Yup.string().required(),
-    })
-
     try {
-      await schema.validateSync(request.body, { abortEarly: false })
+      const schema = Yup.object().shape({
+        name: Yup.string().required(),
+        price: Yup.number().required(),
+        category_id: Yup.number().required(),
+      })
+
+      try {
+        await schema.validateSync(request.body, {
+          abortEarly: false,
+        })
+      } catch (err) {
+        return response.status(400).json({
+          error: err.errors,
+        })
+      }
+
+      const {
+        filename: path
+      } = request.file
+      const {
+        name,
+        price,
+        category_id
+      } = request.body
+
+      const product = await Product.create({
+        name,
+        price,
+        category_id,
+        path,
+      })
+
+      return response.json(product)
     } catch (err) {
-      return response.status(400).json({ error: err.errors })
+      console.log(err)
     }
+  }
 
-    const { filename:path } = request.file
-    const { name, price, category } = request.body
-
-    const product = await Product.create({
-      name,
-      price,
-      category,
-      path,
+  async index(request, response) {
+    const products = await Product.findAll({
+      include: [{
+        model: Category,
+        as: 'category',
+        attributes: ['id', 'name']
+      }]
     })
 
-    return response.json(product)
+    return response.json(products)
   }
 }
 
