@@ -18,10 +18,7 @@ class SessionController {
 
     if (!(await schema.isValid(request.body))) useEmailOrPasswordIncorret()
 
-    const {
-      email,
-      password
-    } = request.body
+    const { email, password } = request.body
 
     const user = await User.findOne({
       where: {
@@ -38,12 +35,16 @@ class SessionController {
       email,
       name: user.name,
       admin: user.admin,
-      token: jwt.sign({
-        id: user.id,
-        name: user.name
-      }, authConfig.secret, {
-        expiresIn: authConfig.expiresIn,
-      }),
+      token: jwt.sign(
+        {
+          id: user.id,
+          name: user.name,
+        },
+        authConfig.secret,
+        {
+          expiresIn: authConfig.expiresIn,
+        }
+      ),
     })
   }
 }

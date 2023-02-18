@@ -1,5 +1,6 @@
 import * as Yup from "yup"
 import Category from "../models/Category"
+import User from "../models/User"
 
 class CategoryController {
   async store(request, response) {
@@ -10,17 +11,21 @@ class CategoryController {
 
       try {
         await schema.validateSync(request.body, {
-          abortEarly: false
+          abortEarly: false,
         })
       } catch (err) {
         return response.status(400).json({
-          error: err.errors
+          error: err.errors,
         })
       }
 
-      const {
-        name
-      } = request.body
+      const { admin: isAdmin } = await User.findByPk(request.userId)
+
+      if (!isAdmin) {
+        return response.status(401).json({ message: "Não autorizado" })
+      }
+
+      const { name } = request.body
 
       const categoryExists = await Category.findOne({
         where: {
@@ -30,19 +35,17 @@ class CategoryController {
 
       if (categoryExists) {
         return response.status(400).json({
-          error: "Essa catergoria já existe"
+          error: "Essa catergoria já existe",
         })
       }
 
-      const {
-        id
-      } = await Category.create({
-        name
+      const { id } = await Category.create({
+        name,
       })
 
       return response.json({
         name,
-        id
+        id,
       })
     } catch (err) {
       console.log(err)

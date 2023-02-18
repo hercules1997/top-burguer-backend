@@ -13,7 +13,6 @@ class Database {
   constructor() {
     this.init()
     this.mongo()
-    
   }
 
   init() {
@@ -26,8 +25,9 @@ class Database {
   }
 
   mongo() {
+    mongoose.set("strictQuery", false)
     this.mongoConnection = mongoose.connect(
-      'mongodb://localhost:27017/buguercode',
+      "mongodb://localhost:27017/burguerMongo",
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,

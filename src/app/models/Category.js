@@ -1,14 +1,15 @@
-import Sequelize, {
-  Model
-} from "sequelize"
+import Sequelize, { Model } from "sequelize"
 
 class Category extends Model {
   static init(sequelize) {
-    super.init({
-      name: Sequelize.STRING,
-    }, {
-      sequelize,
-    })
+    super.init(
+      {
+        name: Sequelize.STRING,
+      },
+      {
+        sequelize,
+      }
+    )
     return this
   }
 }

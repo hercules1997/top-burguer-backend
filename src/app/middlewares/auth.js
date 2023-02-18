@@ -6,7 +6,7 @@ export default (request, response, next) => {
 
   if (!authToken) {
     return response.status(401).json({
-      error: "Token not provided"
+      error: "Token not provided",
     })
   }
 
@@ -25,7 +25,7 @@ export default (request, response, next) => {
     })
   } catch (err) {
     return response.status(401).json({
-      error: "token is invalid"
+      error: "token is invalid",
     })
   }
 }
