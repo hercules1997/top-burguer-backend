@@ -27,7 +27,7 @@ class Database {
   mongo() {
     mongoose.set("strictQuery", false)
     this.mongoConnection = mongoose.connect(
-      "mongodb://localhost:27017/burguerMongo",
+      "mongodb://localhost:27017/topBurguer",
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
