@@ -37,7 +37,7 @@ class ProductController {
         price: price,
         category_id,
         path,
-        offer,
+        offer
       })
 
       return response.json(product)
