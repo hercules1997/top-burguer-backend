@@ -1,3 +1,5 @@
+
+
 import * as Yup from "yup"
 import Category from "../models/Category"
 import Product from "../models/Product"
@@ -5,7 +7,9 @@ import User from "../models/User"
 
 class ProductController {
   async store(request, response) {
-    try {
+    try { 
+           
+  
       const schema = Yup.object().shape({
         name: Yup.string().required(),
         price: Yup.number().required(),
