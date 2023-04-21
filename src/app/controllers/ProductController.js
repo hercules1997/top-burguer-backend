@@ -1,5 +1,3 @@
-
-
 import * as Yup from "yup"
 import Category from "../models/Category"
 import Product from "../models/Product"
@@ -7,9 +5,7 @@ import User from "../models/User"
 
 class ProductController {
   async store(request, response) {
-    try { 
-           
-  
+    try {
       const schema = Yup.object().shape({
         name: Yup.string().required(),
         price: Yup.number().required(),
@@ -30,7 +26,9 @@ class ProductController {
       const { admin: isAdmin } = await User.findByPk(request.userId)
 
       if (!isAdmin) {
-        return response.status(401).json({ message: "Não autorizado" })
+        return response.status(401).json({
+          message: "Não autorizado",
+        })
       }
 
       const { filename: path } = request.file
@@ -41,7 +39,7 @@ class ProductController {
         price: price,
         category_id,
         path,
-        offer
+        offer,
       })
 
       return response.json(product)
@@ -82,11 +80,12 @@ class ProductController {
           error: err.errors,
         })
       }
-
       const { admin: isAdmin } = await User.findByPk(request.userId)
 
       if (!isAdmin) {
-        return response.status(401).json({ message: "Não autorizado" })
+        return response.status(401).json({
+          message: "Não autorizado",
+        })
       }
 
       const { id } = request.params
@@ -94,7 +93,9 @@ class ProductController {
       const product = await Product.findByPk(id)
 
       if (!product) {
-        return response.status(401).json({ message: "Produto não existe" })
+        return response.status(401).json({
+          message: "Produto não existe",
+        })
       }
 
       let path
@@ -112,10 +113,16 @@ class ProductController {
           path,
           offer,
         },
-        { where: { id } }
+        {
+          where: {
+            id,
+          },
+        }
       )
 
-      return response.status(200).json({ message: "Alterado com sucesso!" })
+      return response.status(200).json({
+        message: "Alterado com sucesso!",
+      })
     } catch (err) {
       console.log(err)
     }
