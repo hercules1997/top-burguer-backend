@@ -2,15 +2,10 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.removeColumn("products", "category")
+    await queryInterface.removeColumn("Products", "category")
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.createColumn("products", {
-      category: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-    })
+    await queryInterface.addColumn("Products", "category", Sequelize.STRING)
   },
 }

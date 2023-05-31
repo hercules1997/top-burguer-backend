@@ -2,7 +2,10 @@ import * as Yup from "yup"
 import Category from "../models/Category"
 import Product from "../models/Product"
 import User from "../models/User"
+import database from "../../database"
+import { Sequelize } from "sequelize"
 
+const sequelize = database.connection
 class ProductController {
   async store(request, response) {
     try {
@@ -61,6 +64,41 @@ class ProductController {
 
     return response.json(products)
   }
+
+
+
+  async delete(request, response) {
+    try {
+      const Item = sequelize.define("products", {
+        name: Sequelize.STRING,
+        price: Sequelize.REAL,
+        path: Sequelize.STRING,
+        offer: Sequelize.BOOLEAN,
+        url: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return `http://localhost:3001/product-file/${this.path}`
+          },
+        },
+      })
+
+      const { id } = request.params
+      const contactId = await Product.findByPk(id)
+      console.log(contactId)
+
+
+       Item.destroy({ where: { id: contactId.dataValues.id } })
+      return response
+        .status(200)
+        .json({ message: "Contato deletado com sucesso!" })
+    } catch (error) {
+      console.log(err)
+    }
+  }
+
+
+
+
 
   async update(request, response) {
     try {
