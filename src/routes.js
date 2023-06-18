@@ -12,7 +12,7 @@ import OrderController from "./app/controllers/OrderController"
 const upload = multer(multerConfig)
 const routes = new Router()
 
-
+routes.get("/products", ProductController.index)
 routes.get("/categories", CategoryController.index)
 /*
 ROTA PARA CRIAÇÃO DE USUÁRIOS
